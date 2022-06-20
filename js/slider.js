@@ -5,6 +5,10 @@ dragElement = (target) => {
     const tooltip = target.querySelector('.slider__tooltip');
     const btn = target.querySelector(".slider__btn");
 
+    var event = new CustomEvent("onSliderChanged", {detail: {
+        value: 0.5
+    }});
+
     target.addEventListener('mousedown', (e) => {
         onMouseMove(e, target, btn, color, tooltip);
         curListener = (e) => {
@@ -33,6 +37,9 @@ dragElement = (target) => {
         tooltip.style.opacity = 1;
 
         tooltip.textContent = Math.round(percentPosition) + '%';
+
+        event.detail.value = (btn.x + 10) / targetRect.width;
+        target.dispatchEvent(event);
     };
 
     onMouseUp = (e, target, btn, color, tooltip) => {

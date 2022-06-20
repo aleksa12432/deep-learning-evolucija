@@ -53,75 +53,77 @@ h2 {
     align-self: center;
     display: flex;
     flex-direction: column;
+
+    &__box {
+        width: 100%;
+        height: 1rem;
+        cursor: pointer;
+        box-shadow: inset .2rem .2rem .5rem var(--greyLight-2),
+            inset -.2rem -.2rem .5rem var(--white);
+        border-radius: 1rem;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__btn {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        background: var(--white);
+        position: absolute;
+        box-shadow: 0px .1rem .3rem 0px var(--greyLight-3);
+        z-index: 200;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &:hover~.slider__tooltip {
+            opacity: 1;
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            width: .8rem;
+            height: .8rem;
+            border-radius: 50%;
+            box-shadow: inset .2rem .2rem .5rem var(--greyLight-2),
+                inset -.2rem -.2rem .5rem var(--white);
+        }
+    }
+
+    &__color {
+        height: 100%;
+        width: 50%;
+        position: absolute;
+        left: 0;
+        z-index: 100;
+        border-radius: inherit;
+        background: var(--primary);
+        background: linear-gradient(-1deg, var(--primary-dark) 0%, var(--primary) 50%, var(--primary-light) 100%);
+    }
+
+    &__tooltip {
+        position: absolute;
+        top: 2.6rem;
+        height: 2.5rem;
+        width: 3rem;
+        border-radius: .6rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.2rem;
+        color: var(--primary);
+        box-shadow: .3rem .3rem .6rem var(--greyLight-2),
+            -.2rem -.2rem .5rem var(--white);
+        opacity: 0;
+        transition: opacity .3s ease;
+    }
+
 }
 
-.slider__box {
-    width: 100%;
-    height: 1rem;
-    cursor: pointer;
-    box-shadow: inset .2rem .2rem .5rem var(--greyLight-2),
-        inset -.2rem -.2rem .5rem var(--white);
-    border-radius: 1rem;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.slider__btn {
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50%;
-    background: var(--white);
-    position: absolute;
-    box-shadow: 0px .1rem .3rem 0px var(--greyLight-3);
-    z-index: 200;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.slider__btn:hover~.slider__tooltip {
-    opacity: 1;
-}
-
-.slider__btn::after {
-    content: '';
-    position: absolute;
-    width: .8rem;
-    height: .8rem;
-    border-radius: 50%;
-    box-shadow: inset .2rem .2rem .5rem var(--greyLight-2),
-        inset -.2rem -.2rem .5rem var(--white);
-}
-
-.slider__color {
-    height: 100%;
-    width: 50%;
-    position: absolute;
-    left: 0;
-    z-index: 100;
-    border-radius: inherit;
-    background: var(--primary);
-    background: linear-gradient(-1deg, var(--primary-dark) 0%, var(--primary) 50%, var(--primary-light) 100%);
-}
-
-.slider__tooltip {
-    position: absolute;
-    top: 2.6rem;
-    height: 2.5rem;
-    width: 3rem;
-    border-radius: .6rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.2rem;
-    color: var(--primary);
-    box-shadow: .3rem .3rem .6rem var(--greyLight-2),
-        -.2rem -.2rem .5rem var(--white);
-    opacity: 0;
-    transition: opacity .3s ease;
-}
 
 #desni-bar {
     width: 100%;

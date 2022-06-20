@@ -8,6 +8,7 @@
     <title>DL projekat</title>
     <script type="module" defer src="js/main.js"></script>
     <script defer src="js/slider.js"></script>
+    <link rel="icon" type="image/svg+xml" href="favicon.png" />
     <link rel="stylesheet" href="css/style.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,10 +20,10 @@
         <h1>Пројекат - дубоко учење</h1>
         <div class="bar-item">
             <h2>
-                Подешавање 1
+                Брзина X
             </h2>
             <div class="slider">
-                <div class="slider__box">
+                <div class="slider__box" id="speedx">
                     <span class="slider__btn"></span>
                     <span class="slider__color"></span>
                     <span class="slider__tooltip">50%</span>
@@ -31,10 +32,10 @@
         </div>
         <div class="bar-item">
             <h2>
-                Подешавање 2
+                Брзина Y
             </h2>
             <div class="slider">
-                <div class="slider__box">
+                <div class="slider__box" id="speedy">
                     <span class="slider__btn"></span>
                     <span class="slider__color"></span>
                     <span class="slider__tooltip">50%</span>
@@ -53,6 +54,7 @@
                 </div>
             </div>
         </div>
+        <h2 id="brojPoena">Поени: 0</h2>
     </div>
     <div id="desni-bar">
     </div>
