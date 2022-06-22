@@ -55,11 +55,17 @@ app.ticker.add((delta) => {
     zec.position.x += brzina[0] * smer[0] * delta;
     zec.position.y += brzina[1] * smer[1]  * delta;
 
-    if (zec.position.x + zec.width > app.view.width || zec.position.x < 0)
-        smer[0] = -smer[0];
+    if (zec.position.x + zec.width > app.view.width )
+        smer[0] = -1;
+    
+    if (zec.position.x < 0)
+        smer[0] = 1;
 
-    if (zec.position.y + zec.height > app.view.height || zec.position.y < 0)
-        smer[1] = -smer[1];
+    if (zec.position.y + zec.height > app.view.height)
+        smer[1] = -1;
+
+    if (zec.position.y < 0)
+        smer[1] = 1;
 
     vreme -= delta;
 
