@@ -1,134 +1,157 @@
 :root {
-    --primary-light: #8abdff;
-    --primary: #6d5dfc;
-    --primary-dark: #5b0eeb;
+  --primary-light: #8abdff;
+  --primary: #6d5dfc;
+  --primary-dark: #5b0eeb;
 
-    --white: #FFFFFF;
-    --greyLight-1: #E4EBF5;
-    --greyLight-2: #c8d0e7;
-    --greyLight-3: #bec8e4;
-    --greyDark: #9baacf;
+  --white: #ffffff;
+  --greyLight-1: #e4ebf5;
+  --greyLight-2: #c8d0e7;
+  --greyLight-3: #bec8e4;
+  --greyDark: #9baacf;
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    background-color: #45428A;
-    display: flex;
-    align-items: stretch;
-    color: white;
-    font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background-color: #45428a;
+  display: flex;
+  align-items: stretch;
+  color: white;
+  font-family: "Inter", sans-serif;
 }
 
 canvas {
-    margin: auto;
-    padding: 0;
+  margin: auto;
+  padding: 0;
 }
 
 #levi-bar {
-    padding: 20px;
-    width: 30%;
-    background-color: #343267;
+  padding: 20px;
+  width: 30%;
+  background-color: #343267;
 }
 
 h1 {
-    font-size: 20px;
-    font-weight: 400;
-    margin-bottom: 2em;
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 2em;
 }
 
 h2 {
-    font-size: 18px;
-    font-weight: 400;
+  font-size: 18px;
+  font-weight: 400;
 }
 
 .bar-item {
-    padding-bottom: 50px;
+  padding-bottom: 50px;
 }
 
 .slider {
-    grid-column: 3 / 4;
-    grid-row: 5 / 6;
-    align-self: center;
-    display: flex;
-    flex-direction: column;
+  grid-column: 3 / 4;
+  grid-row: 5 / 6;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
 
-    &__box {
-        width: 100%;
-        height: 1rem;
-        cursor: pointer;
-        box-shadow: inset .2rem .2rem .5rem var(--greyLight-2),
-            inset -.2rem -.2rem .5rem var(--white);
-        border-radius: 1rem;
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    &__btn {
-        width: 2rem;
-        height: 2rem;
-        border-radius: 50%;
-        background: var(--white);
-        position: absolute;
-        box-shadow: 0px .1rem .3rem 0px var(--greyLight-3);
-        z-index: 200;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        &:hover~.slider__tooltip {
-            opacity: 1;
-        }
-
-        &::after {
-            content: '';
-            position: absolute;
-            width: .8rem;
-            height: .8rem;
-            border-radius: 50%;
-            box-shadow: inset .2rem .2rem .5rem var(--greyLight-2),
-                inset -.2rem -.2rem .5rem var(--white);
-        }
-    }
-
-    &__color {
-        height: 100%;
-        width: 50%;
-        position: absolute;
-        left: 0;
-        z-index: 100;
-        border-radius: inherit;
-        background: var(--primary);
-        background: linear-gradient(-1deg, var(--primary-dark) 0%, var(--primary) 50%, var(--primary-light) 100%);
-    }
-
-    &__tooltip {
-        position: absolute;
-        top: 2.6rem;
-        height: 2.5rem;
-        width: 3rem;
-        border-radius: .6rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 1.2rem;
-        color: var(--primary);
-        box-shadow: .3rem .3rem .6rem var(--greyLight-2),
-            -.2rem -.2rem .5rem var(--white);
-        opacity: 0;
-        transition: opacity .3s ease;
-    }
-
-}
-
-
-#desni-bar {
+  &__box {
     width: 100%;
-    height: 100%;
+    height: 1rem;
+    cursor: pointer;
+    box-shadow: inset 0.2rem 0.2rem 0.5rem var(--greyLight-2),
+      inset -0.2rem -0.2rem 0.5rem var(--white);
+    border-radius: 1rem;
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  &__btn {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--white);
+    position: absolute;
+    box-shadow: 0px 0.1rem 0.3rem 0px var(--greyLight-3);
+    z-index: 200;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover ~ .slider__tooltip {
+      opacity: 1;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 0.8rem;
+      height: 0.8rem;
+      border-radius: 50%;
+      box-shadow: inset 0.2rem 0.2rem 0.5rem var(--greyLight-2),
+        inset -0.2rem -0.2rem 0.5rem var(--white);
+    }
+  }
+
+  &__color {
+    height: 100%;
+    width: 50%;
+    position: absolute;
+    left: 0;
+    z-index: 100;
+    border-radius: inherit;
+    background: var(--primary);
+    background: linear-gradient(
+      -1deg,
+      var(--primary-dark) 0%,
+      var(--primary) 50%,
+      var(--primary-light) 100%
+    );
+  }
+
+  &__tooltip {
+    position: absolute;
+    top: 2.6rem;
+    height: 2.5rem;
+    width: 3rem;
+    border-radius: 0.6rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    color: var(--primary);
+    box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2),
+      -0.2rem -0.2rem 0.5rem var(--white);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+}
+
+.dugme {
+  width: 150px;
+  height: 80px;
+  background: #f2f2f2;
+  border-radius: 11px;
+  text-decoration: none;
+  color: #0b0b0b;
+  font-family: "Open Sans", sans-serif;
+  font-size: 22px;
+  box-shadow: inset 0 0 15px rgba(66, 66, 66, 0),
+    inset 0 0 20px rgba(255, 255, 255, 0), 7px 7px 15px rgba(58, 58, 58, 0.15),
+    -7px -7px 20px rgba(255, 255, 255, 0.118), inset 0px 0px 4px rgba(255, 255, 255, 0.2);
+  transition: box-shadow 399ms ease-in-out;
+  &:hover {
+    box-shadow: inset 7px 7px 15px rgba(66, 66, 66, 0.15),
+      inset -7px -7px 20px white, 0px 0px 4px rgba(255, 255, 255, 0.2);
+    color: #676767;
+  }
+}
+
+#desni-bar {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

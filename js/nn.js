@@ -72,12 +72,27 @@ export class Neuron {
     return this.activation.activate(this.calcZ(inputs));
   }
 
+  mutacija(sansa, snaga) {
+    if (Math.random() < sansa / 100) {
+        let mut = []
+        for (let i = 0; i < this.weights.length; i++) {
+            const factor = (Math.random() - 0.5) * snaga;
+            this.weights[i] += factor;
+            mut[i] = factor;
+        }
+        const basisMut = (Math.random() - 0.5) * snaga;
+        this.basis += basisMut;
+        console.log(`Мутација W: ${mut}\nМутација b: ${basisMut}`);
+    }
+  }
+
   // str враћа ниску која описује неурон
   str() {
     return `Неурон:
     \tАктивација: ${this.activation.name}
     \tТежине: ${this.weights}\n\tОснова: ${this.basis}`;
   }
+
 }
 
 // класа NeuralNetworkLayer
@@ -108,6 +123,11 @@ export class NeuralNetworkLayer {
     }
 
     return A;
+  }
+
+  mutacija(sansa, snaga) {
+    for (let i = 0; i < this.neurons.length; i++)
+        this.neurons[i].mutacija(sansa, snaga);
   }
 
   str() {
@@ -145,6 +165,11 @@ export class NeuralNetwork {
         for (let index = 0; index < this.layers.length; index++)
             s += this.layers[index].str() + "\n";
         return s;
+    }
+    
+    mutacija(sansa, snaga) {
+        for (let i = 0; i < this.layers.length; i++)
+            this.layers[i].mutacija(sansa, snaga);
     }
 
 }
