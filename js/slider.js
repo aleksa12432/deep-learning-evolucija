@@ -2,7 +2,7 @@ var curListener;
 
 dragElement = (target) => {
     const color = target.querySelector('.slider__color');
-    const tooltip = target.querySelector('.slider__tooltip');
+    const tooltip = null; //target.querySelector('.slider__tooltip');
     const btn = target.querySelector(".slider__btn");
 
     var event = new CustomEvent("onSliderChanged", {detail: {
@@ -33,10 +33,10 @@ dragElement = (target) => {
 
         color.style.width = percentPosition + "%";
 
-        tooltip.style.left = btn.x - 5 + 'px';
-        tooltip.style.opacity = 1;
+        // tooltip.style.left = btn.x - 5 + 'px';
+        // tooltip.style.opacity = 1;
 
-        tooltip.textContent = Math.round(percentPosition) + '%';
+        // tooltip.textContent = Math.round(percentPosition) + '%';
 
         event.detail.value = (btn.x + 10) / targetRect.width;
         target.dispatchEvent(event);
@@ -44,14 +44,14 @@ dragElement = (target) => {
 
     onMouseUp = (e, target, btn, color, tooltip) => {
         window.removeEventListener('mousemove', curListener);
-        tooltip.style.opacity = 0;
+        // tooltip.style.opacity = 0;
 
         btn.addEventListener('mouseover', function () {
-            tooltip.style.opacity = 1;
+            // tooltip.style.opacity = 1;
         });
 
         btn.addEventListener('mouseout', function () {
-            tooltip.style.opacity = 0;
+            // tooltip.style.opacity = 0;
         });
     };
 };

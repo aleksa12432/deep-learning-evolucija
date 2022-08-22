@@ -2,24 +2,26 @@ import * as PIXI from "pixi.js";
 import { Activation, brziLayer, NeuralNetwork } from "./nn";
 import TestNN from "./test";
 
-const vremeSargarepa = 5; // време потребно да се створи шаргарепа
-const brzina = 3;
-const globalScale = 0.3; // величина сличица
-const sansaMutacije = 10; // шанса за сваки неурон да мутира %
-const snagaMutacije = 0.5; // снага мутације, ако мутира неурон, [-0.5, 0.5] * снага
-const brojZeceva = 100; // број зечева у старту
-const minZeceva = 50; // минималан број зечева
-const hraneZaRazmnozavanje = 10; // колико хране треба да скупи зец за размножавање
-const vremeZivotaZeca = 500;
-const umiriPriDodiruZida = true;
-const odlucan = true; // ако је true, одлука је или -1 или 1 (лево или десно), нема између
-const drziMax = false; // кад умре зец одмах се размножи
-const noviMutiraju = false; // ако је true, нови зечеви узимају гене најбољег
+let vremeSargarepa = 100; // време потребно да се створи шаргарепа
+let brzina = 0.5;
+let globalScale = 0.5; // величина сличица
+let sansaMutacije = 15; // шанса за сваки неурон да мутира %
+let snagaMutacije = 1; // снага мутације, ако мутира неурон, [-0.5, 0.5] * снага
+let brojZeceva = 50; // број зечева у старту
+let minZeceva = 25; // минималан број зечева
+let hraneZaRazmnozavanje = 8; // колико хране треба да скупи зец за размножавање
+let vremeZivotaZeca = 500;
+
+let umiriPriDodiruZida = true;
+let odlucan = true; // ако је true, одлука је или -1 или 1 (лево или десно), нема између
+let drziMax = false; // кад умре зец одмах се размножи
+let noviMutiraju = false; // ако је true, нови зечеви узимају гене најбољег
 
 let poeni = 0;
 let vreme = 50;
 let sargarepe = [];
 let zecevi = [];
+let mapa = [];
 
 let app = new PIXI.Application({
   width: 800,
@@ -30,9 +32,32 @@ let app = new PIXI.Application({
 const brPoena = document.getElementById("brojPoena");
 const zecTekstura = PIXI.Texture.from("img/bunny.png");
 const sargarepaTekstura = PIXI.Texture.from("img/carrot.png");
+const travaTekstura = PIXI.Texture.from("img/grass.png");
 const tanh = new Activation("Tanh", function (z) {
   return Math.tanh(z);
 });
+
+function genMap() {
+  for (let i = 0; i < mapa.length; i++) {
+    const element = mapa[i];
+    app.stage.removeChild(element)
+  }
+  mapa = [];
+  for (let i = 0; i < 800 / (470 * globalScale * 0.2); i++) {
+    for (let j = 0; j < 600 / (403 * globalScale * 0.2); j++) {
+      const trava = new PIXI.Sprite(travaTekstura);
+      trava.scale.x = globalScale * 0.2;
+      trava.scale.y = globalScale * 0.2;
+      trava.position.x = i * (trava.width < 2? 470 * globalScale * 0.2 : trava.width);// * 470;
+      trava.position.y = j * (trava.height < 2? 403 * globalScale * 0.2 : trava.height);// * 403;
+      console.log(travaTekstura.width);
+      app.stage.addChild(trava);
+      mapa.push(trava);
+    }
+  }
+}
+
+genMap();
 
 class Zec {
   constructor(x, y, nn) {
@@ -86,16 +111,11 @@ class Zec {
 
     const outputs = this.nn.calcA(inputs);
 
-    this.zec.position.x += odlucan
-      ? outputs[0] >= 0
-        ? 1
-        : -1
-      : outputs[0] * brzina * delta;
-    this.zec.position.y += odlucan
-      ? outputs[1] >= 0
-        ? 1
-        : -1
-      : outputs[1] * brzina * delta;
+    this.zec.position.x +=
+      (odlucan ? (outputs[0] >= 0 ? 1 : -1) : outputs[0]) * brzina * delta;
+
+    this.zec.position.y +=
+      (odlucan ? (outputs[1] >= 0 ? 1 : -1) : outputs[1]) * brzina * delta;
 
     if (this.zec.position.x + this.zec.width > app.view.width) {
       if (umiriPriDodiruZida) {
@@ -238,7 +258,7 @@ for (let i = 0; i < brojZeceva; i++) {
 }
 
 app.ticker.add((delta) => {
-    // console.log(app.ticker.FPS);
+  // console.log(app.ticker.FPS);
   for (let i = 0; i < zecevi.length; i++) {
     const element = zecevi[i];
     element.pomeraj(delta);
@@ -263,23 +283,92 @@ app.ticker.add((delta) => {
   }
 });
 
-document
-  .getElementById("speedx")
-  .addEventListener("onSliderChanged", function (e) {
-    // brzina[0] = e.detail.value * 5;
-  });
+function reload() {
+  genMap();
 
-document
-  .getElementById("speedy")
-  .addEventListener("onSliderChanged", function (e) {
-    // brzina[1] = e.detail.value * 5;
+  zecevi.forEach((element) => {
+    element.umri();
   });
+  sargarepe.forEach((element) => {
+    app.stage.removeChild(element);
+    sargarepe = [];
+  });
+}
 
 window.onload = function () {
   const desniBar = document.querySelector("#desni-bar");
   desniBar.appendChild(app.view);
   const dugmeMutiraj = document.querySelector("#dugmeMutiraj");
   dugmeMutiraj.addEventListener("click", mutiraj);
+
+  document
+    .getElementById("sargarepeTimer")
+    .addEventListener("onSliderChanged", function (e) {
+      vremeSargarepa = e.detail.value * 200;
+    });
+
+  document
+    .getElementById("brzinaZeceva")
+    .addEventListener("onSliderChanged", function (e) {
+      brzina = e.detail.value * 1;
+    });
+  document
+    .getElementById("skalaSveta")
+    .addEventListener("onSliderChanged", function (e) {
+      globalScale = e.detail.value * 1;
+      reload();
+    });
+  document
+    .getElementById("sansaMutacije")
+    .addEventListener("onSliderChanged", function (e) {
+      sansaMutacije = e.detail.value * 30;
+    });
+  document
+    .getElementById("snagaMutacije")
+    .addEventListener("onSliderChanged", function (e) {
+      snagaMutacije = e.detail.value * 2;
+    });
+  document
+    .getElementById("brojZeceva")
+    .addEventListener("onSliderChanged", function (e) {
+      brojZeceva = e.detail.value * 100;
+      reload();
+    });
+  document
+    .getElementById("minZeceva")
+    .addEventListener("onSliderChanged", function (e) {
+      minZeceva = e.detail.value * 50;
+      reload();
+    });
+  document
+    .getElementById("hraneZaRazmnozavanje")
+    .addEventListener("onSliderChanged", function (e) {
+      hraneZaRazmnozavanje = e.detail.value * 15;
+    });
+  document
+    .getElementById("vremeZivotaZeca")
+    .addEventListener("onSliderChanged", function (e) {
+      hraneZaRazmnozavanje = e.detail.value * 1000;
+    });
+  const cbUmirePriDodiruZida = document.getElementById("umirePriDodiruZida");
+  const cbOdlucan = document.getElementById("odlucan");
+  const cbDrziMax = document.getElementById("drziMax");
+  const cbNoviMutiraju = document.getElementById("noviMutiraju");
+
+  cbUmirePriDodiruZida.addEventListener("click", function (e) {
+    umiriPriDodiruZida = cbUmirePriDodiruZida.checked;
+  });
+  cbOdlucan.addEventListener("click", function (e) {
+    odlucan = cbOdlucan.checked;
+  });
+  cbDrziMax.addEventListener("click", function (e) {
+    drziMax = cbDrziMax.checked;
+    reload();
+  });
+  cbNoviMutiraju.addEventListener("click", function (e) {
+    noviMutiraju = cbNoviMutiraju.checked;
+    reload();
+  });
 };
 
 TestNN();

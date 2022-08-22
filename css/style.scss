@@ -1,7 +1,7 @@
 :root {
-  --primary-light: #8abdff;
-  --primary: #6d5dfc;
-  --primary-dark: #5b0eeb;
+  --primary-light: #37ec43;
+  --primary: #242424;
+  --primary-dark: rgb(24, 24, 24);
 
   --white: #ffffff;
   --greyLight-1: #e4ebf5;
@@ -10,15 +10,33 @@
   --greyDark: #9baacf;
 }
 
+.bg-slika {
+  position: absolute;
+  scale: 1;
+  bottom: -300px;
+  right: -200px;
+  z-index: -1;
+  &.s-1 {
+    scale: 0.5;
+    left: 0;
+    top: 200px;
+  }
+  & > g > path {
+    stroke: var(--primary-light);
+  }
+}
+
 body {
   margin: 0;
   padding: 0;
   height: 100vh;
-  background-color: #45428a;
+  background-color: var(--primary);
   display: flex;
   align-items: stretch;
-  color: white;
+  color: var(--primary-light);
   font-family: "Inter", sans-serif;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 canvas {
@@ -28,8 +46,12 @@ canvas {
 
 #levi-bar {
   padding: 20px;
-  width: 30%;
-  background-color: #343267;
+  width: 20%;
+  background-color: var(--primary-dark);
+  overflow: scroll;
+  &::-webkit-scrollbar {
+    display:none;
+  }
 }
 
 h1 {
@@ -131,10 +153,10 @@ h2 {
 .dugme {
   width: 150px;
   height: 80px;
-  background: #f2f2f2;
+  background: var(--primary-dark);
   border-radius: 11px;
   text-decoration: none;
-  color: #0b0b0b;
+  color: var(--primary-light);
   font-family: "Open Sans", sans-serif;
   font-size: 22px;
   box-shadow: inset 0 0 15px rgba(66, 66, 66, 0),
@@ -143,9 +165,9 @@ h2 {
   transition: box-shadow 399ms ease-in-out;
   &:hover {
     box-shadow: inset 7px 7px 15px rgba(66, 66, 66, 0.15),
-      inset -7px -7px 20px white, 0px 0px 4px rgba(255, 255, 255, 0.2);
-    color: #676767;
-  }
+      inset -7px -7px 20px rgb(33, 33, 33), 0px 0px 4px rgba(255, 255, 255, 0.2);
+      color: var(--primary-light);
+    }
 }
 
 #desni-bar {
