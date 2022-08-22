@@ -88,7 +88,7 @@ class Zec {
       this.umri();
     }
 
-    
+
     if (this.najblizaSargarepa == null || Math.sqrt((this.najblizaSargarepa.position.x - this.zec.position.x) ** 2 + (this.najblizaSargarepa.position.y - this.zec.position.y) ** 2) > maxUdaljenost) {
       this.najblizaSargarepa = najblizaSargarepa(
         this.zec.position.x,
@@ -96,7 +96,7 @@ class Zec {
       );
     }
 
-    // console.log(`${this.najblizaSargarepa.position.x}, ${this.najblizaSargarepa.position.y}`);
+    console.log(`${this.najblizaSargarepa.position.x}, ${this.najblizaSargarepa.position.y}`);
 
     for (let i = 0; i < sargarepe.length; i++) {
       const sargarepa = sargarepe[i];
@@ -276,7 +276,7 @@ for (let i = 0; i < brojZeceva; i++) {
 app.ticker.add((delta) => {
   // console.log(app.ticker.FPS);
 
-  if (zecevi.length < minZeceva) 
+  if (zecevi.length < minZeceva) if (noviMutiraju) mutirajNajboljeg(); else randomZec();
 
   for (let i = 0; i < zecevi.length; i++) {
     const element = zecevi[i];
