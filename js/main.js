@@ -2,6 +2,9 @@ import * as PIXI from "pixi.js";
 import { Activation, brziLayer, NeuralNetwork } from "./nn";
 import TestNN from "./test";
 
+const windowWidth = 1200;
+const windowHeight = 800;
+
 let vremeSargarepa = 100; // време потребно да се створи шаргарепа
 let brzina = 0.5;
 let globalScale = 0.5; // величина сличица
@@ -17,6 +20,8 @@ let odlucan = true; // ако је true, одлука је или -1 или 1 (�
 let drziMax = false; // кад умре зец одмах се размножи
 let noviMutiraju = false; // ако је true, нови зечеви узимају гене најбољег
 
+const maxUdaljenost = 100;
+
 let poeni = 0;
 let vreme = 50;
 let sargarepe = [];
@@ -24,8 +29,8 @@ let zecevi = [];
 let mapa = [];
 
 let app = new PIXI.Application({
-  width: 800,
-  height: 600,
+  width: windowWidth,
+  height: windowHeight,
   backgroundColor: 0x7774bc,
 });
 
@@ -43,8 +48,8 @@ function genMap() {
     app.stage.removeChild(element)
   }
   mapa = [];
-  for (let i = 0; i < 800 / (470 * globalScale * 0.2); i++) {
-    for (let j = 0; j < 600 / (403 * globalScale * 0.2); j++) {
+  for (let i = 0; i < windowWidth / (470 * globalScale * 0.2); i++) {
+    for (let j = 0; j < windowHeight / (403 * globalScale * 0.2); j++) {
       const trava = new PIXI.Sprite(travaTekstura);
       trava.scale.x = globalScale * 0.2;
       trava.scale.y = globalScale * 0.2;
@@ -69,6 +74,7 @@ class Zec {
     this.nn = nn;
     this.pojedenoHrane = 0;
     this.lifeTimer = vremeZivotaZeca;
+    this.izabranaSargarepa = null;
     zecevi.push(this);
     app.stage.addChild(this.zec);
   }
@@ -82,31 +88,41 @@ class Zec {
       this.umri();
     }
 
-    const najblizaHrana = najblizaSargarepa(
-      this.zec.position.x,
-      this.zec.position.y
-    );
-
-    if (hitTestRectangle(this.zec, sargarepe[najblizaHrana])) {
-      app.stage.removeChild(sargarepe[najblizaHrana]);
-      sargarepe.splice(najblizaHrana, 1);
-      poeni++;
-      brPoena.innerHTML = "Поени: " + poeni;
-      this.lifeTimer = vremeZivotaZeca;
-      this.pojedenoHrane++;
-      if (this.pojedenoHrane % hraneZaRazmnozavanje == 0) {
-        console.log("УСПЕО!");
-        mutirajOd(this.nn);
-      }
+    
+    if (this.najblizaSargarepa == null || Math.sqrt((this.najblizaSargarepa.position.x - this.zec.position.x) ** 2 + (this.najblizaSargarepa.position.y - this.zec.position.y) ** 2) > maxUdaljenost) {
+      this.najblizaSargarepa = najblizaSargarepa(
+        this.zec.position.x,
+        this.zec.position.y
+      );
     }
 
-    if (sargarepe[najblizaHrana] == null) return;
+    // console.log(`${this.najblizaSargarepa.position.x}, ${this.najblizaSargarepa.position.y}`);
+
+    for (let i = 0; i < sargarepe.length; i++) {
+      const sargarepa = sargarepe[i];
+      if (hitTestRectangle(this.zec, sargarepa)) {
+        app.stage.removeChild(sargarepa);
+        sargarepe.splice(i, 1);
+        if (sargarepa == this.izabranaSargarepa)
+          this.izabranaSargarepa = null;
+        poeni++;
+        brPoena.innerHTML = "Поени: " + poeni;
+        this.lifeTimer = vremeZivotaZeca;
+        this.pojedenoHrane++;
+        if (this.pojedenoHrane % hraneZaRazmnozavanje == 0) {
+          console.log("УСПЕО!");
+          mutirajOd(this.nn);
+        }
+      }
+    }
+    
+    if (this.najblizaSargarepa == null) return;
 
     const inputs = [
       this.zec.position.x,
       this.zec.position.y,
-      sargarepe[najblizaHrana].position.x,
-      sargarepe[najblizaHrana].position.y,
+      this.najblizaSargarepa.position.x,
+      this.najblizaSargarepa.position.y,
     ];
 
     const outputs = this.nn.calcA(inputs);
@@ -172,7 +188,7 @@ class Zec {
 // ова функција враћа координате најближе шаргарепе
 function najblizaSargarepa(x, y) {
   if (sargarepe.length == 0) return 0;
-  if (sargarepe.length == 1) return 0;
+  if (sargarepe.length == 1) return sargarepe[0];
   let najblizi = 0;
   let d = Math.sqrt(
     (sargarepe[0].position.x - x) ** 2 + (sargarepe[1].position.y - y) ** 2
@@ -187,7 +203,7 @@ function najblizaSargarepa(x, y) {
       d = d2;
     }
   }
-  return najblizi;
+  return sargarepe[najblizi];
 }
 
 function hitTestRectangle(r1, r2) {
@@ -259,6 +275,9 @@ for (let i = 0; i < brojZeceva; i++) {
 
 app.ticker.add((delta) => {
   // console.log(app.ticker.FPS);
+
+  if (zecevi.length < minZeceva) 
+
   for (let i = 0; i < zecevi.length; i++) {
     const element = zecevi[i];
     element.pomeraj(delta);

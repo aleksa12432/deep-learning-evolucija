@@ -6,7 +6,7 @@ import {
   brziLayer,
 } from "./nn";
 
-export default function Test() {
+export default function TestNN() {
   let inputs = [1, 2, 3];
 
   let sigmoid = new Activation("Sigmoid", function(z) {

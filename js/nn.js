@@ -7,30 +7,9 @@ export class Activation {
   }
 
   // функција activate прима скалар
-  // враћа активацију скалара
+  // враћа активацију
   activate(z) {
     return this.func(z);
-  }
-}
-
-// класа Vector,
-// прави вектор од низа
-class Vector {
-  constructor(arr) {
-    this.arr = arr;
-  }
-
-  // функција add прима вектор
-  // и враћа нови вектор збира
-  add(otherVector) {
-    const oa = otherVector.arr;
-
-    if (this.arr.length != oa.length) return;
-
-    let res = [];
-    for (let key in this.arr) res[key] = this.arr[key] + oa[key];
-
-    return new Vector(res);
   }
 }
 
@@ -74,7 +53,7 @@ export class Neuron {
 
   mutacija(sansa, snaga) {
     if (Math.random() < sansa / 100) {
-        let mut = []
+        let mut = [];
         for (let i = 0; i < this.weights.length; i++) {
             const factor = (Math.random() - 0.5) * snaga;
             this.weights[i] += factor;
