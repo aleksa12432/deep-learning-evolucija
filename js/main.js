@@ -2,8 +2,8 @@ import * as PIXI from "pixi.js";
 import { Activation, brziLayer, NeuralNetwork } from "./nn";
 import TestNN from "./test";
 
-const windowWidth = 1200;
-const windowHeight = 800;
+const windowWidth = 800;
+const windowHeight = 600;
 
 let vremeSargarepa = 100; // време потребно да се створи шаргарепа
 let brzina = 0.5;
